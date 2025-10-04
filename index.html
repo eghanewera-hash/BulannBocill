@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>I LOVE YOU 💘</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: black;
+      font-family: 'Courier New', monospace;
+      color: yellow;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .container {
+      z-index: 5;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px yellow;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    #text {
+      display: inline-block;
+      border-right: 2px solid yellow;
+      animation: blink-caret 0.75s step-end infinite;
+      white-space: pre-wrap;
+      font-size: 20px;
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: yellow; }
+    }
+
+    .music-button {
+      font-size: 40px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: pink;
+      margin-bottom: 15px;
+    }
+
+    .music-button:hover {
+      transform: scale(1.1);
+    }
+
+    .note {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+  <div class="note">pencet love nya ya cantik 🤍</div>
+  <button id="toggleMusic" class="music-button">💓</button>
+  <div id="text"></div>
+</div>
+
+<audio id="music" loop>
+  <source src="https://files.catbox.moe/05iiun.mp3" type="audio/mp3">
+</audio>
+
+<script>
+  // Background bintang jatuh
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+  let w, h;
+  let stars = [];
+
+  function resizeCanvas() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function createStars() {
+    stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 1.5,
+        speed: Math.random() * 1 + 0.3
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "white";
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = "white";
+    for (let star of stars) {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
+      star.y += star.speed;
+      if (star.y > h) {
+        star.y = 0;
+        star.x = Math.random() * w;
+      }
+    }
+    requestAnimationFrame(drawStars);
+  }
+
+  createStars();
+  drawStars();
+
+  // Ketikan teks
+  const fullText = `Baby just know⁉️ I loOve youu 💘‼️
+sOoo MucH 🫶🏻‼️ that's nOt gonNa change 🙅‍♀️✋
+
+Feelings ❤️ tHey coMe ☀️✨ and 🌝 thEey won't Goo aWaayy 🚗💨
+
+fOor yooOuu 💫‼️ baby just Know... 💐
+
+I LOVE YOU 💗💐😁`;
+  const teksEl = document.getElementById("text");
+  let i = 0;
+
+  function typeWriter() {
+    if (i < fullText.length) {
+      teksEl.innerHTML += fullText.charAt(i);
+      i++;
+      setTimeout(typeWriter, 120); // lambat biar romantis
+    }
+  }
+
+  typeWriter();
+
+  // Musik toggle
+  const btn = document.getElementById("toggleMusic");
+  const music = document.getElementById("music");
+
+  btn.addEventListener("click", () => {
+    if (music.paused) {
+      music.play();
+      btn.textContent = "💝";
+    } else {
+      music.pause();
+      btn.textContent = "💓";
+    }
+  });
+</script>
+
+</body>
+</html>
